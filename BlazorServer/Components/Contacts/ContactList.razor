@@ -1,0 +1,29 @@
+﻿@inject IJSRuntime jsRuntime
+
+@if (Contacts is null)
+{
+	<span>@m_loadingMessage</span>
+}
+else if (Contacts.Count == 0)
+{
+	<span>No contacts were found.</span>
+}
+else
+{
+	@if (m_displayContacts)
+	{
+		<input type="checkbox" @bind="m_displayEmail" /> <label>Display Email</label>
+		@foreach (var contact in Contacts)
+		{
+			<ContactInfo 
+				CurrentContact="@contact"
+				DisplayEmail="@m_displayEmail"
+				DeleteCurrentContact="@DeleteContact">
+			</ContactInfo>
+		}
+		<br />
+		<TextBox @attributes="@m_textboxAttributes"></TextBox>
+	}
+}
+
+<DeleteConfirmation></DeleteConfirmation>

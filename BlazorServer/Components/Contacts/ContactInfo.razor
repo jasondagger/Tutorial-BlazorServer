@@ -1,0 +1,25 @@
+﻿<p>
+
+	<b>Name: </b><span>@CurrentContact.FirstName @CurrentContact.LastName</span><br />
+
+	@if (DisplayEmail)
+	{
+		<b>Email: </b><i>@CurrentContact.Email</i><br />
+	}
+	@if (m_displayInfo)
+	{
+		<span>This is additional info.</span>
+	}
+	<br />
+
+	<button onclick="@(() => { 
+		m_displayInfo = !m_displayInfo; 
+	})">Show Info</button>
+
+	<button onclick="@(() => { 
+		DeleteCurrentContact.InvokeAsync(
+			CurrentContact
+		); 
+	})">Delete</button>
+
+</p>

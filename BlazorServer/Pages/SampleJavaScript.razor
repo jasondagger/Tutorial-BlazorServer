@@ -1,0 +1,75 @@
+﻿@page "/SampleJavaScript"
+@inject IJSRuntime jsRuntime
+
+<h3>Sample JavaScript</h3>
+
+<span>@m_confirmResult</span>
+<br />
+
+<button @onclick="@ShowAlert">Alert</button>
+<br />
+<br />
+<button @onclick="@ShowConfirm">Confirm</button>
+<br />
+<br />
+<button onclick="callMethod()">Call Method</button>
+<br />
+<br />
+<button @onclick="@CallInvokeMethodJavaScript">Call Instance Method</button>
+
+@code {
+	[JSInvokable]
+	public async Task<string> GetValueFromInstance()
+	{
+		return await Task.FromResult<string>(
+			"Hello World from Instance!"
+		);
+	}
+
+	private string m_confirmResult = string.Empty;
+
+	private async Task CallInvokeMethodJavaScript()
+	{
+		var sampleJSReference = await jsRuntime.InvokeAsync<IJSObjectReference>(
+			"import",
+			"./js/sample.js"
+		);
+		await sampleJSReference.InvokeVoidAsync(
+			"callInstanceMethod",
+			DotNetObjectReference.Create(
+				this
+			)
+		);
+		//await jsRuntime.InvokeVoidAsync(
+		//	"callInstanceMethod",
+		//	DotNetObjectReference.Create(
+		//		this
+		//	)
+		//);
+	}
+
+	private void ShowAlert()
+	{
+		jsRuntime.InvokeVoidAsync(
+			"alert",
+			"Hello World!"
+		);
+	}
+
+	private async Task ShowConfirm()
+	{
+		var result = await jsRuntime.InvokeAsync<bool>(
+			"confirm",
+			"Do you need to proceed?"
+		);
+		m_confirmResult = result.ToString();
+	}
+
+	[JSInvokable]
+	public static Task<string> GetValueFromMethod()
+	{
+		return Task.FromResult<string>(
+			"Hello World!"
+		);
+	}
+}

@@ -1,0 +1,52 @@
+﻿@page "/ContactServices"
+@inject IContactService contactService
+
+<h3>Contact Services</h3>
+
+<input placeholder="First Name" @bind="@m_firstName" />
+<br />
+<br />
+<input placeholder="Last Name" @bind="@m_lastName" />
+<br />
+<br />
+<input placeholder="Email" @bind="@m_email" />
+<br />
+<br />
+<button @onclick="@AddContact">Add Contact</button>
+<br />
+<br />
+<br />
+
+@if (!contactService.HasContacts())
+{
+	<b>No Contacts to display.</b>
+}
+else
+{
+	var contacts = contactService.GetContacts();	
+	@foreach(var contact in contacts)
+	{
+		<b>@contact.FirstName @contact.LastName</b>
+		<br />
+		<i>@contact.Email</i>
+		<br />
+		<hr />
+	}
+}
+
+@code {
+	private string m_firstName = string.Empty;
+	private string m_lastName = string.Empty;
+	private string m_email = string.Empty;
+
+	private void AddContact()
+	{
+		contactService.AddContact(
+			new(
+				m_firstName,
+				m_lastName,
+				m_email
+			)
+		);
+	}
+}

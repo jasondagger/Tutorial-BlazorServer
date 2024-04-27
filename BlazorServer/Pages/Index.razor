@@ -1,0 +1,10 @@
+﻿@page "/"
+
+<h1>Index</h1>
+<br />
+<ContactList @ref="m_contactList" Contacts="m_contacts"></ContactList>
+@if (m_contactList is not null && m_contacts?.Count > 0)
+{
+	<br />
+	<button @onclick="@ToggleContacts">Show/Hide Contacts</button>
+}
