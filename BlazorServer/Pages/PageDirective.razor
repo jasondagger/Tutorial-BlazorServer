@@ -1,0 +1,30 @@
+﻿@page "/PageDirective/{ContactName}/{Age:int}"
+@inject NavigationManager navigationManager
+
+<h3>Page Directive</h3>
+
+<a href="./">Home</a>
+
+<button @onclick="Navigate">Navigate</button>
+
+<br />
+<br />
+
+<span>@ContactName</span>
+<br />
+<span>@Age</span>
+
+@code {
+	[Parameter]
+	public string ContactName { get; set; } = string.Empty;
+
+	[Parameter]
+	public int Age { get; set; } = 0;
+
+	private void Navigate()
+	{
+		navigationManager.NavigateTo(
+			"./"
+		);
+	}
+}

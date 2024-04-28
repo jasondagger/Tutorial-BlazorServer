@@ -18,7 +18,7 @@ else
 			<ContactInfo 
 				CurrentContact="@contact"
 				DisplayEmail="@m_displayEmail"
-				DeleteCurrentContact="@DeleteContact">
+				DeleteCurrentContact="@RequestPermissionForDeletion">
 			</ContactInfo>
 		}
 		<br />
@@ -26,4 +26,4 @@ else
 	}
 }
 
-<DeleteConfirmation></DeleteConfirmation>
+<DeleteConfirmation @ref="@m_deleteConfirmation" OnConfirmed="@OnDeleteContactConfirmed"></DeleteConfirmation>

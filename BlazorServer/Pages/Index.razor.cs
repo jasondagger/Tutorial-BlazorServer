@@ -37,10 +37,19 @@ namespace BlazorServer.Pages
 
 		[Inject]
 		private IContactService m_contactService { get; set; } = new ContactService();
+		[Inject]
+		private NavigationManager? m_navigationManager { get; set; } = null;
 
 		private List<Contact>? m_contacts = null;
 		private ContactList? m_contactList = null;
 		private bool m_areContactsDisplayed = true;
+
+		private void Navigate()
+		{
+			m_navigationManager?.NavigateTo(
+				"./PageDirective"
+			);
+		}
 
 		private void ToggleContacts()
 		{

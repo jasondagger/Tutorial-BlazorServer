@@ -1,4 +1,5 @@
 ﻿using BlazorServer.Models;
+using BlazorServer.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -24,25 +25,40 @@ namespace BlazorServer.Components.Contacts
 		{ "disabled",    "disabled" },
 	};
 
+		private DeleteConfirmation m_deleteConfirmation = new();
 		private bool m_displayEmail = false;
 		private bool m_displayContacts = true;
 		private string m_loadingMessage = string.Empty;
 
-		private async Task DeleteContact(
+		private void RequestPermissionForDeletion(
 			Contact contact
 		)
 		{
-			var result = await jsRuntime.InvokeAsync<bool>(
-				"confirm",
-				$"Are you sure you want to delete {contact.FirstName} {contact.FirstName}?"
-			);
+			//var result = await jsRuntime.InvokeAsync<bool>(
+			//	"confirm",
+			//	$"Are you sure you want to delete {contact.FirstName} {contact.FirstName}?"
+			//);
+			//
+			//if (result)
+			//{
+			//	Contacts?.Remove(
+			//		contact
+			//	);
+			//}
 
-			if (result)
-			{
-				Contacts?.Remove(
-					contact
-				);
-			}
+			m_deleteConfirmation.BodyContent = $"Are you sure you want to delete {contact.FirstName} {contact.LastName}?";
+			m_deleteConfirmation.ContactToDelete = contact;
+			m_deleteConfirmation.Show();
+		}
+
+		private void OnDeleteContactConfirmed(
+			Contact contact	
+		)
+		{
+			Contacts?.Remove(
+				contact
+			);
+			m_deleteConfirmation.Hide();
 		}
 
 		private async Task UpdateLoadingMessage()
